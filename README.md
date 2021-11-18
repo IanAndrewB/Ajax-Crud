@@ -8,3 +8,4 @@ It will use Bootstrap 5 for front-end design.
 I already added the basic structure of the tables.
 The create funcion with AJAX has already been created.
 I already added the read functions of the project. 
+Lastly, the delete function of the CRUD project is added.
