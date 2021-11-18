@@ -107,6 +107,21 @@
                 }
             });
         }
+
+        //DELETE FUNCTION
+        function deleteUser(deleteID){
+            $.ajax({
+                url: "db_delete.php",
+                type: 'post',
+                data:{
+                    deleteSend:deleteID
+                },
+                success:function(data,status)
+                {
+                    displayData();
+                }
+            });
+        }
     </script>
 </body>
 </html>
