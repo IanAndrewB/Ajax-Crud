@@ -23,39 +23,74 @@
 
 
 
-     <!-- INSERT MODAL -->
-     <div class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">New User</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-                <div class="form-group mb-3">
-                    <label for="completeName" class="form-label">Full Name</label>
-                    <input type="text" class="form-control" id="completeName" placeholder="Enter your name">
-                </div>
-                <div class="form-group mb-3">
-                    <label for="completeEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="completeEmail" placeholder="Email Address">
-                </div>
-                <div class="form-group mb-3">
-                    <label for="completeMobile" class="form-label">Mobile Number</label>
-                    <input type="text" class="form-control" id="completeMobile" placeholder="Mobile Number">
-                </div>
-                <div class="form-group mb-3">
-                    <label for="completeLocation" class="form-label">Location</label>
-                    <input type="text" class="form-control" id="completeLocation" placeholder="Location">
-                </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-dark" onclick="addUser()">Submit</button>
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-            
-        </div>
+    <!-- INSERT MODAL -->
+    <div class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="completeName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="completeName" placeholder="Enter your name">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="completeEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="completeEmail" placeholder="Email Address">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="completeMobile" class="form-label">Mobile Number</label>
+                        <input type="text" class="form-control" id="completeMobile" placeholder="Mobile Number">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="completeLocation" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="completeLocation" placeholder="Location">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" onclick="addUser()">Submit</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                
+            </div>
+            </div>
         </div>
     </div>
+
+    <!-- UPDATE MODAL -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update User Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="updateName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="updateName" placeholder="Enter your name">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="updateEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="updateEmail" placeholder="Email Address">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="updateMobile" class="form-label">Mobile Number</label>
+                        <input type="text" class="form-control" id="updateMobile" placeholder="Mobile Number">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="updateLocation" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="updateLocation" placeholder="Location">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" onclick="updateDetails()">Update</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <input type="hidden" id="hiddenData">
+            </div>
+            </div>
+        </div>
     </div>
 
     <!--BOOTSTRAP JS-->
@@ -84,6 +119,7 @@
             });
         }
 
+        //CREATE FUNCTION
         function addUser(){
             var nameAdd = $('#completeName').val();
             var emailAdd = $('#completeEmail').val();
@@ -103,6 +139,7 @@
                 {
                     //FUNCTION TO DISPLAY DATA;
                     //console.log(status);
+                    $("#insertModal").modal("hide");
                     displayData();
                 }
             });
@@ -120,6 +157,42 @@
                 {
                     displayData();
                 }
+            });
+        }
+
+        //UPDATE FUNCTION
+        function getDetails(updateID)
+        {
+            $('#hiddenData').val(updateID);
+
+            $.post("db_update.php", {updateID:updateID}, function(data,status){
+                var userId = JSON.parse(data);
+                $('#updateName').val(userId.name);
+                $('#updateEmail').val(userId.email);
+                $('#updateMobile').val(userId.mobile);
+                $('#updateLocation').val(userId.location);
+            });
+
+            $('#updateModal').modal("show");
+        }
+
+        function updateDetails()
+        {
+            var updateName = $('#udpateName').val();
+            var updateEmail = $('#udpateEmail').val();
+            var updateMobile = $('#udpateMobile').val();
+            var updateLocation = $('#udpateLocation').val();
+            var hiddenData = $('#hiddenData').val();
+
+            $.post("db_update.php", {
+                updateName:updateName,
+                updateEmail:updateEmail,
+                updateMobile:updateMobile,
+                updateLocation:updateLocation,
+                hiddenData:hiddenData
+            },function(data,status){
+                $("#udpateModal").modal("hide");
+                displayData();
             });
         }
     </script>

@@ -31,7 +31,7 @@
             <td>'.$mobile.'</td>
             <td>'.$location.'</td>
             <td>
-                <button class="btn btn-dark">Update</button>
+                <button class="btn btn-dark" onclick="getDetails('.$id.')">Update</button>
                 <button class="btn btn-danger" onclick="deleteUser('.$id.')">Delete</button>
             </td>
           </tr>'; 
